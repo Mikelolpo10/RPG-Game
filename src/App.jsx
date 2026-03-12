@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Enemy from './components/Enemy.jsx'
 import PlayerAction from './components/PlayerAction.jsx'
+import { attack } from './logic.js'
 import knight from './assets/knight.png'
 import wizard from './assets/wizard.png'
 import archer from './assets/archer.png'
@@ -8,6 +9,8 @@ import priest from './assets/priest.png'
 import './App.css'
 
 function App() {
+  const turnOver = useRef(false)
+  const selectedChar = useState('')
   const [characters, setCharacter] = useState([
     {
       name: 'knight',
@@ -31,6 +34,17 @@ function App() {
       block: 15
     }
   ])
+
+  const [enemy, setEnemy] = useState({
+    name: 'enemy',
+    health: 300,
+    damage: 30,
+    block: 25
+  })
+
+  useEffect(() => {
+    attack(characters, 'knight', enemy, setCharacter, turnOver)
+  }, [])
 
   return (
     <main>

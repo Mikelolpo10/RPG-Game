@@ -27,7 +27,7 @@ export default function Enemy() {
       "Nice try.",
       "Ez"
     ],
-  
+
     attacked: [
       "Tch...",
       "Lucky hit.",
@@ -51,10 +51,10 @@ export default function Enemy() {
   useEffect(() => {
     setEnemyLine(getEnemyLine('taunt'))
   }, [])
-  
+
   return (
     <div id='enemy-container'>
-      <img id='enemy-img' src={enemyImg} alt='enemy.png'/>
+      <img id='enemy-img' src={enemyImg} alt='enemy.png' />
       <div id="dialog-box">
         <div id="dialog-arrow"></div>
         {enemyLine.length !== 0 ? enemyLine : ''}
