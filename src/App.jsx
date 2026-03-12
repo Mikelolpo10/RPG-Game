@@ -8,14 +8,37 @@ import priest from './assets/priest.png'
 import './App.css'
 
 function App() {
+  const [characters, setCharacter] = useState([
+    {
+      name: 'knight',
+      health: 105,
+      damage: 18,
+      block: 25
+    }, {
+      name: 'wizard',
+      health: 65,
+      damage: 38,
+      block: 7
+    }, {
+      name: 'archer',
+      health: 88,
+      damage: 26,
+      block: 6
+    }, {
+      name: 'priest',
+      health: 82,
+      damage: 8,
+      block: 15
+    }
+  ])
 
   return (
     <main>
       <Enemy />
 
       <div id="player-characters-container">
-        <img src={knight} alt="" style={{transform: 'scaleX(-1)' }} />
-        <img src={wizard} alt="" style={{transform: 'scaleX(-1)' }} />
+        <img src={knight} alt="" style={{ transform: 'scaleX(-1)' }} />
+        <img src={wizard} alt="" style={{ transform: 'scaleX(-1)' }} />
         <img src={archer} alt="" />
         <img src={priest} alt="" />
       </div>
