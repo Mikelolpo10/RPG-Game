@@ -1,0 +1,31 @@
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: black;
+  /* background-image: url('./assets/background.png'); */
+  /* background-position: center; */
+  /* background-repeat: no-repeat; */
+  /* background-size: contain; */
+}
+
+#player-characters-container {
+  margin-top: 6rem;
+  display: flex;
+}
+
+#player-action-container {
+  margin-top: auto;
+  margin-bottom: 6rem;
+  display: flex;
+  gap: 1rem;
+  cursor: pointer;
+}
+
+img {
+  width: 96px;
+}
+
+
