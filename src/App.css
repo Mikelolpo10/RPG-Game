@@ -24,8 +24,27 @@ main {
   cursor: pointer;
 }
 
+.character {
+  cursor: pointer;
+}
+
+.character.is-active {
+  background-color: yellow;
+}
+
 img {
   width: 96px;
 }
 
+aside {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 20rem;
+  width: 20rem;
+}
 
+#player-stats {
+  display: flex;
+  gap: 1rem;
+}

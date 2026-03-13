@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import enemyImg from '../assets/enemy.png'
 import './Enemy.css'
 
-export default function Enemy() {
+export default function Enemy({stats}) {
   const enemyLines = {
     taunt: [
       "Well, look what we have here.",
@@ -58,6 +58,13 @@ export default function Enemy() {
       <div id="dialog-box">
         <div id="dialog-arrow"></div>
         {enemyLine.length !== 0 ? enemyLine : ''}
+      </div>
+      <div id='enemy-debug-stats'>
+        <h5>Stats</h5>
+        <p>{stats.health}</p>
+        <p>{stats.damage}</p>
+        <p>{stats.defense}</p>
+        <p>{stats.critChange}</p>
       </div>
     </div>
   )

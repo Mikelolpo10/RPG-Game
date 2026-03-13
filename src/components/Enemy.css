@@ -31,3 +31,7 @@
   border-right: 20px solid rgb(217, 217, 217);
 }
 
+#enemy-debug-stats {
+  position: absolute;
+  right: 0;
+}

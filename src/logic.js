@@ -1,4 +1,3 @@
-import { head } from "motion/react-client"
 
 export function playerAttack(state, action) {
   const attacker = state.characters[action.payload.attacker]

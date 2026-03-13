@@ -7,12 +7,16 @@ import wizard from './assets/wizard.png'
 import archer from './assets/archer.png'
 import priest from './assets/priest.png'
 import './App.css'
-import { head } from 'motion/react-client'
 
 function App() {
-  const turnOver = useRef(false)
-  // const { selectedChar, setSelectedChar } = useState('')
-  const initialState = {
+  const [selectedChar, setSelectedChar] = useState('knight')
+  const images = {
+    knight,
+    wizard,
+    archer,
+    priest,
+  }
+  const initialStats = {
     characters: {
       knight: { name: 'knight', health: 105, damage: 18, defense: 43, critChance: 0 },
       wizard: { name: 'wizard', health: 65, damage: 38, defense: 18, critChance: 0 },
@@ -27,46 +31,67 @@ function App() {
       critChange: 0
     }
   }
+  const [state, dispatch] = useReducer(reducer, initialStats)
 
-  //Testing
+  // Testing
   useEffect(() => {
     console.log(state)
-  }, [initialState])
+    console.log(selectedChar)
+  }, [initialStats])
 
   function reducer(state, action) {
     switch (action.type) {
       case 'ATTACK':
         return playerAttack(state, action)
-      case 'BLOCK': 
+      case 'BLOCK':
         return playerBlock(state, action)
-
 
       default:
         console.log(`idk`)
         return state
     }
   }
-
-  const [state, dispatch] = useReducer(reducer, initialState)
-
   return (
-    <main>
-      <Enemy />
+    <>
+      <main>
+        <Enemy
+          stats={state.enemy}
+        />
 
-      <div id="player-characters-container">
-        <img src={knight} alt="" style={{ transform: 'scaleX(-1)' }} />
-        <img src={wizard} alt="" style={{ transform: 'scaleX(-1)' }} />
-        <img src={archer} alt="" />
-        <img src={priest} alt="" />
-      </div>
+        <div id="player-characters-container">
+          {Object.entries(state.characters).map(([name], index) => {
+            return (
+              <div key={name} className={`character ${name === selectedChar ? 'is-active': ''}`} onClick={() => setSelectedChar(name)}>
+                <img 
+                  src={images[name]} 
+                  alt={name} 
+                  style={index <= 1 ? { transform: 'scaleX(-1)' } : {}} 
+                />
+              </div>
+            )
+          })}
+        </div>
 
-      <div id="player-action-container">
-        <PlayerAction action='Attack' onClick={() => dispatch({ type: 'ATTACK', payload: { attacker: 'knight', target: 'enemy' } })} />
-        <PlayerAction action='Block' onClick={() => dispatch({ type: 'BLOCK', payload: { blocker: 'priest' } })} />
-        <PlayerAction action='Action' />
-        <PlayerAction action='Menu' />
-      </div>
-    </main>
+        <div id="player-action-container">
+          <PlayerAction action='Attack' onClick={() => dispatch({ type: 'ATTACK', payload: { attacker: 'knight', target: 'enemy' } })} />
+          <PlayerAction action='Block' onClick={() => dispatch({ type: 'BLOCK', payload: { blocker: 'priest' } })} />
+          <PlayerAction action='Action' />
+          <PlayerAction action='Menu' />
+        </div>
+
+        <aside>
+          <div id="player-stats">
+            {Object.entries(state.characters).map(([charName, charStats]) => (
+              <div key={charName}>
+                {Object.entries(charStats).map(([statName, value]) => (
+                  <p key={statName}>{value}</p>
+                ))}
+              </div>
+            ))}
+          </div>
+        </aside>
+      </main>
+    </>
   )
 }
 
