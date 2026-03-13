@@ -5,4 +5,8 @@
   justify-content: center;
   width: 8rem;
   border: 1px solid white;
+  user-select: none;       /* Standar modern */
+  -webkit-user-select: none; /* Chrome, Safari, Opera */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* IE/Edge lama */
 }
