@@ -2,7 +2,7 @@
 export function playerAttack(state, action) {
   const attacker = state.characters[action.payload.attacker]
   const target = state[action.payload.target]
-  const targetHealth = target.health - calculateDamage(attacker, target)
+  const targetHealth = Math.round(target.health - calculateDamage(attacker, target))
   const newState = {...state, enemy: {...state.enemy, health: targetHealth}}
   return newState
 }
@@ -10,14 +10,14 @@ export function playerAttack(state, action) {
 export function playerBlock(state, action) {
   const blockerKey = action.payload.blocker;
   const blocker = state.characters[blockerKey] 
-  const newHealth = blocker.health + (blocker.defense / 2)
+  const newHealth = Math.round(blocker.health + (blocker.defense / 2))
   const newState = {...state, characters: {...state.characters, [blockerKey]: {...blocker, health: newHealth}}}
   return newState
 }
 
 function calculateDamage(attacker, target) {
   const rawDamage = attacker.damage
-  const totalDamage = Math.floor(rawDamage / (1 + (target.defense / 100)))
+  const totalDamage = Math.round(rawDamage / (1 + (target.defense / 100)))
   return totalDamage
 }
 

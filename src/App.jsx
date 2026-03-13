@@ -16,7 +16,7 @@ function App() {
     archer,
     priest,
   }
-  const initialStats = {
+  const initialState = {
     characters: {
       knight: { name: 'knight', health: 105, damage: 18, defense: 43, critChance: 0 },
       wizard: { name: 'wizard', health: 65, damage: 38, defense: 18, critChance: 0 },
@@ -29,15 +29,15 @@ function App() {
       damage: 30,
       defense: 35,
       critChange: 0
+    },
+    turnOver: {
+      knight: false,
+      wizard: false,
+      archer: false,
+      priest: false,
     }
   }
-  const [state, dispatch] = useReducer(reducer, initialStats)
-
-  // Testing
-  useEffect(() => {
-    console.log(state)
-    console.log(selectedChar)
-  }, [initialStats])
+  const [state, dispatch] = useReducer(reducer, initialState)
 
   function reducer(state, action) {
     switch (action.type) {
@@ -47,10 +47,17 @@ function App() {
         return playerBlock(state, action)
 
       default:
-        console.log(`idk`)
+        console.log(`ACTION NOT VALID`)
         return state
     }
   }
+
+  // Testing
+  useEffect(() => {
+    console.log(selectedChar)
+    console.log(ist)
+  }, [initialState])
+
   return (
     <>
       <main>
@@ -61,11 +68,11 @@ function App() {
         <div id="player-characters-container">
           {Object.entries(state.characters).map(([name], index) => {
             return (
-              <div key={name} className={`character ${name === selectedChar ? 'is-active': ''}`} onClick={() => setSelectedChar(name)}>
-                <img 
-                  src={images[name]} 
-                  alt={name} 
-                  style={index <= 1 ? { transform: 'scaleX(-1)' } : {}} 
+              <div key={name} className={`character ${name === selectedChar ? 'is-active' : ''}`} onClick={() => setSelectedChar(name)}>
+                <img
+                  src={images[name]}
+                  alt={name}
+                  style={index <= 1 ? { transform: 'scaleX(-1)' } : {}}
                 />
               </div>
             )
@@ -73,10 +80,21 @@ function App() {
         </div>
 
         <div id="player-action-container">
-          <PlayerAction action='Attack' onClick={() => dispatch({ type: 'ATTACK', payload: { attacker: 'knight', target: 'enemy' } })} />
-          <PlayerAction action='Block' onClick={() => dispatch({ type: 'BLOCK', payload: { blocker: 'priest' } })} />
-          <PlayerAction action='Action' />
-          <PlayerAction action='Menu' />
+          <PlayerAction 
+            action='Attack' 
+            onClick={() => dispatch({ type: 'ATTACK', payload: { attacker: selectedChar, target: 'enemy' }})}
+            // disabled={}
+          />
+          <PlayerAction 
+            action='Block' 
+            onClick={() => dispatch({ type: 'BLOCK', payload: { blocker: selectedChar }})} 
+          />
+          <PlayerAction 
+            action='Action' 
+          />
+          <PlayerAction 
+            action='Menu' 
+          />
         </div>
 
         <aside>
