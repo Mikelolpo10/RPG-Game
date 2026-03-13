@@ -1,3 +1,8 @@
+function calculateDamage(attacker, target) {
+  const rawDamage = attacker.damage
+  const totalDamage = Math.round(rawDamage / (1 + (target.defense / 100)))
+  return totalDamage
+}
 
 export function playerAttack(state, action) {
   const attacker = state.characters[action.payload.attacker]
@@ -15,15 +20,16 @@ export function playerBlock(state, action) {
   return newState
 }
 
-function calculateDamage(attacker, target) {
-  const rawDamage = attacker.damage
-  const totalDamage = Math.round(rawDamage / (1 + (target.defense / 100)))
-  return totalDamage
+export function playerBlock(state, action) {
+  
 }
+
+
+
 
 // const initialState = {
 //   characters: {
-//     knight: { name: 'knight', health: 105, damage: 18, defense: 43, critChance: 0 },
+//     knight: { name: 'knight', health: 105, damage: 15, defense: 43, critChance: 0 },
 //     wizard: { name: 'wizard', health: 65, damage: 38, defense: 18, critChance: 0 },
 //     archer: { name: 'archer', health: 88, damage: 26, defense: 22, critChance: 0 },
 //     priest: { name: 'priest', health: 82, damage: 8, defense: 30, critChance: 0 },
@@ -34,6 +40,12 @@ function calculateDamage(attacker, target) {
 //     damage: 30,
 //     defense: 35,
 //     critChange: 0
+//   },
+//   canPlay: {
+//     knight: true,
+//     wizard: true,
+//     archer: true,
+//     priest: true,
 //   }
 // }
 

@@ -46,8 +46,11 @@ function App() {
         state.canPlay[selectedChar] = false
         return playerAttack(state, action)
       case 'BLOCK':
+        state.canPlay[selectedChar] = false
         return playerBlock(state, action)
-
+      case 'ACTION':
+        state.canPlay[selectedChar] = false
+        return
       default:
         console.log(`ACTION NOT VALID`)
         return state
@@ -95,7 +98,8 @@ function App() {
             disabled={state.canPlay[selectedChar]}
           />
           <PlayerAction 
-            action='Action' 
+            action='Action'
+            disabled={state.canPlay[selectedChar]} 
           />
           <PlayerAction 
             action='Menu' 

@@ -25,6 +25,7 @@ main {
 }
 
 .character {
+  border-radius: 50%;
   cursor: pointer;
 }
 
