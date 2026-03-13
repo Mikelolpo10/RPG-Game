@@ -18,7 +18,7 @@ function App() {
   }
   const initialState = {
     characters: {
-      knight: { name: 'knight', health: 105, damage: 18, defense: 43, critChance: 0 },
+      knight: { name: 'knight', health: 105, damage: 15, defense: 43, critChance: 0 },
       wizard: { name: 'wizard', health: 65, damage: 38, defense: 18, critChance: 0 },
       archer: { name: 'archer', health: 88, damage: 26, defense: 22, critChance: 0 },
       priest: { name: 'priest', health: 82, damage: 8, defense: 30, critChance: 0 },
@@ -30,11 +30,11 @@ function App() {
       defense: 35,
       critChange: 0
     },
-    turnOver: {
-      knight: false,
-      wizard: false,
-      archer: false,
-      priest: false,
+    canPlay: {
+      knight: true,
+      wizard: true,
+      archer: true,
+      priest: true,
     }
   }
   const [state, dispatch] = useReducer(reducer, initialState)
@@ -55,7 +55,6 @@ function App() {
   // Testing
   useEffect(() => {
     console.log(selectedChar)
-    console.log(ist)
   }, [initialState])
 
   return (
@@ -83,11 +82,12 @@ function App() {
           <PlayerAction 
             action='Attack' 
             onClick={() => dispatch({ type: 'ATTACK', payload: { attacker: selectedChar, target: 'enemy' }})}
-            // disabled={}
+            disabled={initialState.canPlay[selectedChar]}
           />
           <PlayerAction 
             action='Block' 
             onClick={() => dispatch({ type: 'BLOCK', payload: { blocker: selectedChar }})} 
+            disabled={initialState.canPlay[selectedChar]}
           />
           <PlayerAction 
             action='Action' 

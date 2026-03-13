@@ -1,10 +1,14 @@
 import './PlayerAction.css'
 
-export default function PlayerAction({action, onClick, disabled}) {
+export default function PlayerAction({action, onClick, disabled = true}) {
   return (
-    <div className='player-action-card' onClick={onClick}>
+    <button 
+      className={`player-action-card ${!disabled ? 'disabled' : ''}`} 
+      onClick={onClick}
+      disabled={!disabled}
+    >
       <h1>{action}</h1>
-    </div>
+    </button>
   )
 }
 

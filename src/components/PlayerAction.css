@@ -4,9 +4,20 @@
   align-items: center;
   justify-content: center;
   width: 8rem;
+  background-color: transparent;
   border: 1px solid white;
+  cursor: pointer;
   user-select: none;       /* Standar modern */
   -webkit-user-select: none; /* Chrome, Safari, Opera */
   -moz-user-select: none;    /* Firefox */
   -ms-user-select: none;     /* IE/Edge lama */
 }
+
+.player-action-card.disabled {
+  border-color: gray;
+  color: gray;
+  cursor: default;
+  user-select: none;
+}
+
+
