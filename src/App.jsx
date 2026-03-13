@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useReducer, act } from 'react'
+import { useState, useEffect, useRef, useReducer } from 'react'
 import Enemy from './components/Enemy.jsx'
 import PlayerAction from './components/PlayerAction.jsx'
 import { playerAttack, playerBlock } from './logic.js'
@@ -10,6 +10,7 @@ import './App.css'
 
 function App() {
   const [selectedChar, setSelectedChar] = useState('knight')
+  const turnOver = useRef(false)
   const images = {
     knight,
     wizard,
@@ -42,6 +43,7 @@ function App() {
   function reducer(state, action) {
     switch (action.type) {
       case 'ATTACK':
+        state.canPlay[selectedChar] = false
         return playerAttack(state, action)
       case 'BLOCK':
         return playerBlock(state, action)
@@ -54,8 +56,11 @@ function App() {
 
   // Testing
   useEffect(() => {
-    console.log(selectedChar)
-  }, [initialState])
+    const allDone = Object.values(state.canPlay).every(value => !value)
+    turnOver.current = allDone
+    console.log(turnOver.current)
+    console.log(state.canPlay)
+  }, [state])
 
   return (
     <>
@@ -82,12 +87,12 @@ function App() {
           <PlayerAction 
             action='Attack' 
             onClick={() => dispatch({ type: 'ATTACK', payload: { attacker: selectedChar, target: 'enemy' }})}
-            disabled={initialState.canPlay[selectedChar]}
+            disabled={state.canPlay[selectedChar]}
           />
           <PlayerAction 
             action='Block' 
             onClick={() => dispatch({ type: 'BLOCK', payload: { blocker: selectedChar }})} 
-            disabled={initialState.canPlay[selectedChar]}
+            disabled={state.canPlay[selectedChar]}
           />
           <PlayerAction 
             action='Action' 

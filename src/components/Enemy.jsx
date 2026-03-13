@@ -1,3 +1,4 @@
+import Typewriter from 'typewriter-effect'
 import { useState, useEffect, useMemo } from 'react';
 import enemyImg from '../assets/enemy.png'
 import './Enemy.css'
@@ -41,15 +42,18 @@ export default function Enemy({stats}) {
     ]
   };
 
-  const [enemyLine, setEnemyLine] = useState('')
-  const randomNum = useMemo(() => Math.random(), []);
   const getEnemyLine = (type) => {
     const lines = enemyLines[type]
-    return lines[Math.floor(randomNum * lines.length)]
+    return lines[Math.floor(Math.random() * lines.length)]
   }
+  const [enemyLine, setEnemyLine] = useState(getEnemyLine('taunt'))
 
   useEffect(() => {
-    setEnemyLine(getEnemyLine('taunt'))
+    const enemyLineInterval = setInterval(() => {
+      setEnemyLine(getEnemyLine('taunt'))
+    }, 20000)
+
+    return () => clearInterval(enemyLineInterval)
   }, [])
 
   return (
@@ -57,7 +61,15 @@ export default function Enemy({stats}) {
       <img id='enemy-img' src={enemyImg} alt='enemy.png' />
       <div id="dialog-box">
         <div id="dialog-arrow"></div>
-        {enemyLine.length !== 0 ? enemyLine : ''}
+        <Typewriter options={{
+          strings: [enemyLine],
+          autoStart: true,
+          delay: 100,
+          pauseFor: 7000,
+          loop: false,
+          cursor: '_',
+        }}
+        />
       </div>
       <div id='enemy-debug-stats'>
         <h5>Stats</h5>

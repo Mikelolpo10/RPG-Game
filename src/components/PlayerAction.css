@@ -15,9 +15,10 @@
 
 .player-action-card.disabled {
   border-color: gray;
-  color: gray;
   cursor: default;
   user-select: none;
 }
 
-
+.player-action-card.disabled > h1 {
+  color: gray;
+}
