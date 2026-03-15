@@ -1,6 +1,7 @@
 function calculateDamage(damage, target) {
   const rawDamage = damage
   const totalDamage = Math.round(rawDamage / (1 + (target.defense / 100)))
+  console.log(totalDamage)
   return totalDamage
 }
 

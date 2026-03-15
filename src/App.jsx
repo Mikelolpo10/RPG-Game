@@ -40,46 +40,46 @@ function App() {
     characters: {
       knight: {
         name: 'knight',
-        health: 105,
-        damage: 15,
+        health: 1050,
+        damage: 150,
         defense: 43,
         critChance: 0,
         skills: {
           shieldBash: {
             type: 'DEBUFF',
-            damage: 10,
-            defense: -10,
+            damage: 120,
+            defense: -15,
           },
 
         }
       },
       wizard: {
         name: 'wizard',
-        health: 65,
-        damage: 38,
+        health: 650,
+        damage: 380,
         defense: 18,
         critChance: 0,
       },
       archer: {
         name: 'archer',
-        health: 88,
-        damage: 26,
+        health: 880,
+        damage: 260,
         defense: 22,
         critChance: 0,
       },
       priest: {
         name: 'priest',
-        health: 82,
-        damage: 8,
+        health: 820,
+        damage: 80,
         defense: 30,
         critChance: 0,
       },
     },
     enemy: {
       name: 'enemy',
-      health: 300,
-      damage: 30,
-      defense: 35,
+      health: 3000,
+      damage: 300,
+      defense: 55,
       critChange: 0
     },
     canPlay: {
