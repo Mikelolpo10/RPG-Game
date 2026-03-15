@@ -28,6 +28,13 @@ function updateEnemy(state, enemy, changes) {
   return newState
 }
 
+function addChanges(health, defense) {
+  return {
+    health: health,
+    defense: defense
+  }
+}
+
 export function playerAttack(state, action) {
   const attacker = state.characters[action.payload.attackerKey]
   const target = state[action.payload.target]
@@ -48,19 +55,27 @@ export function playerBlock(state, action) {
 }
 
 export function playerSkill(state, action) {
+  const attackerKey = action.payload.attacker
   const attacker = state.characters[action.payload.attacker]
   const skillKey = action.payload.skill
   const skill = attacker.skills[skillKey]
-  const enemy = state[action.payload.target]
-  console.log(skill)
+  const target = state[action.payload.target]
+  // console.log(skill)
   switch (action.payload.type) {
     case 'ATTACK': {
-      const damage = calculateDamage(skill.damage, enemy)
+      const damage = calculateDamage(skill.damage, target)
       let damageOverTime = skill.damageOverTime || 0
-      const newHealth = enemy.health - (damage + damageOverTime)
-      const newDefense = enemy.defense + (skill.defense)
-      const changes = { health: newHealth, defense: newDefense, }
-      const newState = updateEnemy(state, enemy, changes)
+      const newHealth = target.health - (damage + damageOverTime)
+      const newDefense = target.defense + (skill.defense)
+      const changes = addChanges(newHealth, newDefense)
+      const newState = updateEnemy(state, target, changes)
+      return newState
+    }
+    case 'BUFF': {
+      const newHealth = attacker.health
+      const newDefense = attacker.defense + skill.defense
+      const changes = addChanges(newHealth, newDefense)
+      const newState = updateCharacter(state, attackerKey, changes)
       return newState
     }
   }

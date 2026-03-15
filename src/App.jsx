@@ -18,9 +18,9 @@ function App() {
     priest,
   }
   // Knight
-  // Shield Bash(done) – Menyerang musuh dengan perisai sehingga mengurangi defense.
-  // Fortify – Meningkatkan defense knight selama 2 turn.
-  // Heavy Slash – Serangan pedang kuat dengan damage lebih dari attack biasa tapi mengurang defense.
+  // Shield Bash(Done) – Menyerang musuh dengan perisai sehingga mengurangi defense.
+  // Fortify(Done) – Meningkatkan defense knight selama 2 turn.
+  // Heavy Slash(Done) – Serangan pedang kuat dengan damage lebih dari attack biasa tapi mengurang defense.
   // Shield Wall — Menyerap damage yang diterima ally dengan rumus rd - (def + allyDef)
   // Wizard
   // Explosion – Serangan api dengan damage tinggi dan memberikan dot untuk 1 turn tapi mengurangi defense dan membuat wizard tidak bisa menyerang pada next turn.
@@ -46,11 +46,19 @@ function App() {
         critChance: 0,
         skills: {
           shieldBash: {
-            type: 'DEBUFF',
+            type: 'DAMAGE',
             damage: 120,
+            defense: -20,
+          },
+          heavySlash: {
+            type: 'DAMAGE',
+            damage: 225,
             defense: -15,
           },
-
+          fortify: {
+            type: 'BUFF',
+            defense: 30,
+          }
         }
       },
       wizard: {
@@ -90,7 +98,7 @@ function App() {
     }
   }
   const [state, dispatch] = useReducer(reducer, initialState)
-  const selectedSkill = useRef('shieldBash')
+  const selectedSkill = useRef('heavySlash') //ganti
 
   function reducer(state, action) {
     switch (action.type) {
@@ -113,7 +121,6 @@ function App() {
   useEffect(() => {
     const allDone = Object.values(state.canPlay).every(value => !value)
     turnOver.current = allDone
-    // console.log(selectedSkill.current)
   }, [state])
 
   return (
@@ -170,7 +177,7 @@ function App() {
                 target: 'enemy',
                 type: 'ATTACK'
               }
-            })}
+            })} //type ganti
             disabled={state.canPlay[selectedChar]}
           />
           <PlayerAction
