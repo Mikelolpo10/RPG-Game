@@ -4,33 +4,45 @@ function calculateDamage(damage, target) {
   return totalDamage
 }
 
-function updateCharacter(state, char, changes) {
+function updateCharacter(state, charKey, changes) {
   const newState = {
     ...state,
     characters: {
       ...state.characters, 
-      [char]: {
-        ...state.characters[char], ...changes
+      [charKey]: {
+        ...state.characters[charKey], ...changes
       }
     }
   }
   return newState
 }
 
+function updateEnemy(state, enemy, changes) {
+  const newState = {
+    ...state,
+    enemy: {
+      ...enemy, ...changes
+    }
+  }
+  return newState
+}
+
 export function playerAttack(state, action) {
-  const attacker = state.characters[action.payload.attacker]
+  const attacker = state.characters[action.payload.attackerKey]
   const target = state[action.payload.target]
-  const damage = calculateDamage(attacker.damage, target)
-  const targetHealth = Math.round(target.health - damage)
-  const newState = { ...state, enemy: { ...state.enemy, health: targetHealth } }
+  const totalDamage = calculateDamage(attacker.damage, target)
+  const targetHealth = Math.round(target.health - totalDamage)
+  const enemyChanges = { health: targetHealth }
+  const newState = updateEnemy(state, target, enemyChanges)
   return newState
 }
 
 export function playerBlock(state, action) {
-  const blockerKey = action.payload.blocker;
+  const { blockerKey } = action.payload;
   const blocker = state.characters[blockerKey]
   const newHealth = Math.round(blocker.health + (blocker.defense / 2))
-  const newState = { ...state, characters: { ...state.characters, [blockerKey]: { ...blocker, health: newHealth } } }
+  const characterChanges = { health: newHealth }
+  const newState = updateCharacter(state, blockerKey, characterChanges)
   return newState
 }
 
@@ -44,7 +56,8 @@ export function playerSkill(state, action) {
       const damage = calculateDamage(skill.damage, enemy)
       let damageOverTime = skill.damageOverTime || 0
       const newHealth = enemy.health - (damage + damageOverTime)
-      const newState = { ...state, [enemy.name]: { ...enemy, health: newHealth }}
+      const changes = { health: newHealth }
+      const newState = updateEnemy(state, enemy, changes)
       return newState
     }
   }

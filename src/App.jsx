@@ -34,6 +34,7 @@ function App() {
   // Heal – Menyembuhkan HP salah satu anggota tim.
   // Holy Light – Serangan cahaya suci ke musuh dengan damage sedang.
   // Blessing – Memberikan buff ke ally yang meningkatkan defense dan attack.
+  // NOTE: Nanti tambah sistem skill kyk honkai starrail jadi skill gbs di spam
   const initialState = {
     characters: {
       knight: {
@@ -141,7 +142,7 @@ function App() {
             onClick={() => dispatch(
               {
                 type: 'ATTACK',
-                payload: { attacker: selectedChar, target: 'enemy' }
+                payload: { attackerKey: selectedChar, target: 'enemy' }
               }
             )}
             disabled={state.canPlay[selectedChar]}
@@ -151,7 +152,7 @@ function App() {
             onClick={() => dispatch(
               {
                 type: 'BLOCK',
-                payload: { blocker: selectedChar }
+                payload: { blockerKey: selectedChar }
               }
             )}
             disabled={state.canPlay[selectedChar]}
