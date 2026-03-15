@@ -51,17 +51,20 @@ export function playerSkill(state, action) {
   const skillKey = action.payload.skill
   const skill = attacker.skills[skillKey]
   const enemy = state[action.payload.target]
+  console.log(skill)
   switch (action.payload.type) {
     case 'ATTACK': {
       const damage = calculateDamage(skill.damage, enemy)
       let damageOverTime = skill.damageOverTime || 0
       const newHealth = enemy.health - (damage + damageOverTime)
-      const changes = { health: newHealth }
+      const newDefense = enemy.defense + (skill.defense)
+      const changes = { health: newHealth, defense: newDefense, }
       const newState = updateEnemy(state, enemy, changes)
       return newState
     }
   }
 }
+
 // const initialState = {
 //   characters: {
 //     knight: {

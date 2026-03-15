@@ -18,7 +18,7 @@ function App() {
     priest,
   }
   // Knight
-  // Shield Bash – Menyerang musuh dengan perisai sehingga mengurangi defense.
+  // Shield Bash(done) – Menyerang musuh dengan perisai sehingga mengurangi defense.
   // Fortify – Meningkatkan defense knight selama 2 turn.
   // Heavy Slash – Serangan pedang kuat dengan damage lebih dari attack biasa tapi mengurang defense.
   // Shield Wall — Menyerap damage yang diterima ally dengan rumus rd - (def + allyDef)
@@ -35,6 +35,7 @@ function App() {
   // Holy Light – Serangan cahaya suci ke musuh dengan damage sedang.
   // Blessing – Memberikan buff ke ally yang meningkatkan defense dan attack.
   // NOTE: Nanti tambah sistem skill kyk honkai starrail jadi skill gbs di spam
+  // NOTE: Tipe skill ada attack, buff, debuff
   const initialState = {
     characters: {
       knight: {
@@ -45,9 +46,11 @@ function App() {
         critChance: 0,
         skills: {
           shieldBash: {
+            type: 'DEBUFF',
             damage: 10,
-            damageOverTime: 2,
-          }
+            defense: -10,
+          },
+
         }
       },
       wizard: {
