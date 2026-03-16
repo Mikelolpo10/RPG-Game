@@ -1,9 +1,9 @@
 import Typewriter from 'typewriter-effect'
 import { useState, useEffect, useMemo } from 'react';
-import enemyImg from '../assets/enemy.png'
+import enemyImg from '../assets/images/enemy.png'
 import './Enemy.css'
 
-export default function Enemy({stats}) {
+export default function Enemy({ stats }) {
   const enemyLines = {
     taunt: [
       "Well, look what we have here.",

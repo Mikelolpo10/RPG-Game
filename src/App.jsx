@@ -2,10 +2,10 @@ import { useState, useEffect, useRef, useReducer } from 'react'
 import Enemy from './components/Enemy.jsx'
 import PlayerAction from './components/PlayerAction.jsx'
 import { playerAttack, playerBlock, playerSkill } from './logic.js'
-import knight from './assets/knight.png'
-import wizard from './assets/wizard.png'
-import archer from './assets/archer.png'
-import priest from './assets/priest.png'
+import knight from './assets/images/knight.png'
+import wizard from './assets/images/wizard.png'
+import archer from './assets/images/archer.png'
+import priest from './assets/images/priest.png'
 import './App.css'
 
 function App() {
@@ -193,6 +193,13 @@ function App() {
                   if (typeof value === 'object') return null
                   return <p key={statName}>{value}</p>
                 })}
+              </div>
+            ))}
+          </div>
+          <div id="character-skills">
+            {Object.keys(state.characters[selectedChar].skills).map((skillName) => (
+              <div key={skillName} className="skill-option">
+                {skillName}
               </div>
             ))}
           </div>
