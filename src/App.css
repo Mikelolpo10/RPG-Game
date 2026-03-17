@@ -1,4 +1,5 @@
 main {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -40,7 +41,7 @@ img {
 aside {
   position: absolute;
   bottom: 0;
-  right: 0;
+  right: 5%;
   height: 20rem;
   width: 20rem;
 }
@@ -50,7 +51,50 @@ aside {
   gap: 1rem;
 }
 
+#skills-modal {
+  position: absolute;
+  inset: 0;
+  padding: 8rem 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(3px);
+}
+
+#modal-header {
+  margin-bottom: 3rem;
+  display: flex;
+  width: 45rem;
+}
+
+#close-modal-button {
+  margin-left: auto;
+  height: 3rem;
+  width: 3rem;
+  cursor: pointer;
+}
+
+#close-modal-button img {
+  width: 130%;
+}
+
 #character-skills {
   display: flex;
   gap: 2rem;
 }
+
+.skill-card {
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 13rem;
+  border-radius: 0.3rem;
+  background-color: cadetblue;
+  cursor: pointer;
+}
+
+
+  
+

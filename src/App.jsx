@@ -2,10 +2,12 @@ import { useState, useEffect, useRef, useReducer } from 'react'
 import Enemy from './components/Enemy.jsx'
 import PlayerAction from './components/PlayerAction.jsx'
 import { playerAttack, playerBlock, playerSkill } from './logic.js'
+import { closeSkillsModal, openSkillsModal } from './design.js'
 import knight from './assets/images/knight.png'
 import wizard from './assets/images/wizard.png'
 import archer from './assets/images/archer.png'
 import priest from './assets/images/priest.png'
+import closeButton from './assets/images/closeX.png'
 import './App.css'
 
 function App() {
@@ -25,7 +27,7 @@ function App() {
   // Wizard
   // Explosion – Serangan api dengan damage tinggi dan memberikan dot untuk 1 turn tapi mengurangi defense dan membuat wizard tidak bisa menyerang pada next turn.
   // Lightning Strike – Serangan petir cepat yang memiliki peluang menembus defense?.
-  // Weaken — Memberikan debuff attack 
+  // Sword Phalanx — Summon 3 pedang yg dimana naikin defense dan serang musuh dengan damage moderate
   // Archer
   // Piercing Arrow – Panah yang menembus armor sehingga sebagian defense musuh diabaikan.
   // Rapid Shot?? – Menembakkan beberapa panah cepat dengan total damage sedang.
@@ -34,6 +36,7 @@ function App() {
   // Heal – Menyembuhkan HP salah satu anggota tim.
   // Holy Light – Serangan cahaya suci ke musuh dengan damage sedang.
   // Blessing – Memberikan buff ke ally yang meningkatkan defense dan attack.
+  // Weaken – Memberikan debuff attack .
   // NOTE: Nanti tambah sistem skill kyk honkai starrail jadi skill gbs di spam
   // NOTE: Tipe skill ada attack, buff, debuff
   const initialState = {
@@ -67,6 +70,22 @@ function App() {
         damage: 380,
         defense: 18,
         critChance: 0,
+        skills: {
+          explosion: {
+            type: 'DAMAGE',
+            damage: 530,
+            defense: -20,
+          },
+          lightningStrike: {
+            type: 'DAMAGE',
+            damage: 225,
+            defense: -15,
+          },
+          swordPhalanx: {
+            type: 'DAMAGE',
+            defense: 30,
+          }
+        }
       },
       archer: {
         name: 'archer',
@@ -74,6 +93,22 @@ function App() {
         damage: 260,
         defense: 22,
         critChance: 0,
+        skills: {
+          piercingArrow: {
+            type: 'DAMAGE',
+            damage: 120,
+            defense: -20,
+          },
+          heavySlash: {
+            type: 'DAMAGE',
+            damage: 225,
+            defense: -15,
+          },
+          focusAim: {
+            type: 'DAMAGE',
+            defense: 30,
+          }
+        }
       },
       priest: {
         name: 'priest',
@@ -81,6 +116,22 @@ function App() {
         damage: 80,
         defense: 30,
         critChance: 0,
+        skills: {
+          shieldBash: {
+            type: 'DAMAGE',
+            damage: 120,
+            defense: -20,
+          },
+          heavySlash: {
+            type: 'DAMAGE',
+            damage: 225,
+            defense: -15,
+          },
+          fortify: {
+            type: 'BUFF',
+            defense: 30,
+          }
+        }
       },
     },
     enemy: {
@@ -98,7 +149,7 @@ function App() {
     }
   }
   const [state, dispatch] = useReducer(reducer, initialState)
-  const selectedSkill = useRef('heavySlash') //ganti
+  const selectedSkill = useRef('') //ganti
 
   function reducer(state, action) {
     switch (action.type) {
@@ -169,15 +220,9 @@ function App() {
           />
           <PlayerAction
             action='Skill'
-            onClick={() => dispatch({
-              type: 'SKILL',
-              payload: {
-                skill: selectedSkill.current,
-                attacker: selectedChar,
-                target: 'enemy',
-                type: 'ATTACK'
-              }
-            })} //type ganti
+            onClick={() => {
+              openSkillsModal()
+            }} 
             disabled={state.canPlay[selectedChar]}
           />
           <PlayerAction
@@ -196,14 +241,37 @@ function App() {
               </div>
             ))}
           </div>
+        </aside>
+
+        <div id="skills-modal">
+          <div id="modal-header">
+            <div id="close-modal-button" onClick={closeSkillsModal}>
+              <img src={closeButton} alt="close button" />
+            </div>
+          </div>
           <div id="character-skills">
             {Object.keys(state.characters[selectedChar].skills).map((skillName) => (
-              <div key={skillName} className="skill-option">
+              <div
+                key={skillName}
+                className="skill-card"
+                onClick={() => {
+                  selectedSkill.current = skillName
+                  closeSkillsModal()
+                  dispatch({
+                    type: 'SKILL',
+                    payload: {
+                      skill: selectedSkill.current,
+                      attacker: selectedChar,
+                      target: 'enemy',
+                    }
+                  })
+                }}
+              >
                 {skillName}
               </div>
             ))}
           </div>
-        </aside>
+        </div>
       </main>
     </>
   )

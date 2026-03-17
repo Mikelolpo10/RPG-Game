@@ -56,12 +56,12 @@ export function playerBlock(state, action) {
 export function playerSkill(state, action) {
   const attackerKey = action.payload.attacker
   const attacker = state.characters[action.payload.attacker]
+  
   const skillKey = action.payload.skill
   const skill = attacker.skills[skillKey]
   const target = state[action.payload.target]
-  // console.log(skill)
-  switch (action.payload.type) {
-    case 'ATTACK': {
+  switch (skill.type) {
+    case 'DAMAGE': {
       const damage = calculateDamage(skill.damage, target)
       let damageOverTime = skill.damageOverTime || 0
       const newHealth = target.health - (damage + damageOverTime)
@@ -79,57 +79,3 @@ export function playerSkill(state, action) {
     }
   }
 }
-
-// const initialState = {
-//   characters: {
-//     knight: {
-//       name: 'knight',
-//       health: 105,
-//       damage: 15,
-//       defense: 43,
-//       critChance: 0,
-//       skills: {
-//         shieldBash: {
-//           damage: 10,
-//           damageOverTime: 2,
-//         }
-//       }
-//     },
-//     wizard: {
-//       name: 'wizard',
-//       health: 65,
-//       damage: 38,
-//       defense: 18,
-//       critChance: 0,
-//     },
-//     archer: {
-//       name: 'archer',
-//       health: 88,
-//       damage: 26,
-//       defense: 22,
-//       critChance: 0,
-//     },
-//     priest: {
-//       name: 'priest',
-//       health: 82,
-//       damage: 8,
-//       defense: 30,
-//       critChance: 0,
-//     },
-//   },
-//   enemy: {
-//     name: 'enemy',
-//     health: 300,
-//     damage: 30,
-//     defense: 35,
-//     critChange: 0
-//   },
-//   canPlay: {
-//     knight: true,
-//     wizard: true,
-//     archer: true,
-//     priest: true,
-//   }
-// }
-
-
