@@ -60,7 +60,7 @@ function App() {
           },
           fortify: {
             type: 'BUFF',
-            defense: 30,
+            defenseSelf: 30,
           }
         }
       },
@@ -74,16 +74,15 @@ function App() {
           explosion: {
             type: 'DAMAGE',
             damage: 530,
-            defense: -20,
+            defenseSelf: -20,
           },
-          lightningStrike: {
+          inferno: {
             type: 'DAMAGE',
-            damage: 225,
-            defense: -15,
+            damage: 100,
           },
           swordPhalanx: {
             type: 'DAMAGE',
-            defense: 30,
+            defenseSelf: -30,
           }
         }
       },

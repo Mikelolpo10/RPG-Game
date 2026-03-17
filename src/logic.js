@@ -1,6 +1,5 @@
 function calculateDamage(damage, target) {
-  const rawDamage = damage
-  const totalDamage = Math.round(rawDamage / (1 + (target.defense / 100)))
+  const totalDamage = Math.round(damage / (1 + (target.defense / 100)))
   return totalDamage
 }
 
@@ -44,7 +43,7 @@ export function playerAttack(state, action) {
   return newState
 }
 
-export function playerBlock(state, action) {
+export function playerBlock(state, action) { //REVISI Sangat underwhelming
   const { blockerKey } = action.payload;
   const blocker = state.characters[blockerKey]
   const newHealth = Math.round(blocker.health + (blocker.defense / 2))
@@ -65,27 +64,30 @@ export function playerSkill(state, action) {
       const damage = calculateDamage(skill.damage, target)
       let damageOverTime = skill.damageOverTime || 0
 
+      //Enemy changes
       const enemyHealth = target.health - (damage + damageOverTime)
-      const enemyDefense = target.defense + (skill.defense)
+      let enemyDefense = target.defense
+
+      if (skill.defense) enemyDefense = target.defense + (skill.defense) 
 
       const enemyChanges = addChanges(enemyHealth, enemyDefense)
       const enemyState = updateEnemy(state, target, enemyChanges)
       enemyState
-      console.log(enemyState)
 
+      //Character changes
       let characterHealth = attacker.health
       let characterDefense = attacker.defense
 
-      if (skill.defense > 0) characterDefense = attacker.defense + skill.defense
-      if (skill.health > 0) characterHealth = attacker.health + skill.health
+      if (skill.defenseSelf) characterDefense = attacker.defense + skill.defenseSelf
+      if (skill.healthSelf) characterHealth = attacker.health + skill.health
 
       const characterChanges = addChanges(characterHealth, characterDefense)
       const characterState = updateCharacter(enemyState, attackerKey, characterChanges)
       return characterState
     }
     case 'BUFF': {
-      const newHealth = attacker.health
-      const newDefense = attacker.defense + skill.defense
+      const newHealth = attacker.health + skill.healthSelf || attacker.health
+      const newDefense = attacker.defense + skill.defenseSelf || attacker.defense
       const changes = addChanges(newHealth, newDefense)
       const newState = updateCharacter(state, attackerKey, changes)
       return newState
