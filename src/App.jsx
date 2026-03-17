@@ -21,8 +21,8 @@ function App() {
   }
   // Knight
   // Shield Bash(Done) – Menyerang musuh dengan perisai sehingga mengurangi defense.
+  // Heavy Slash(Done) – Serangan pedang kuat dengan damage lebih dari attack biasa dan mengurang defense 1 turn.
   // Fortify(Done) – Meningkatkan defense knight selama 2 turn.
-  // Heavy Slash(Done) – Serangan pedang kuat dengan damage lebih dari attack biasa tapi mengurang defense.
   // Shield Wall — Menyerap damage yang diterima ally dengan rumus rd - (def + allyDef)
   // Wizard
   // Explosion – Serangan api dengan damage tinggi dan memberikan dot untuk 1 turn tapi mengurangi defense dan membuat wizard tidak bisa menyerang pada next turn.
@@ -56,7 +56,7 @@ function App() {
           heavySlash: {
             type: 'DAMAGE',
             damage: 225,
-            defense: -15,
+            defense: -10,
           },
           fortify: {
             type: 'BUFF',
@@ -149,7 +149,7 @@ function App() {
     }
   }
   const [state, dispatch] = useReducer(reducer, initialState)
-  const selectedSkill = useRef('') //ganti
+  const selectedSkill = useRef('') 
 
   function reducer(state, action) {
     switch (action.type) {
@@ -172,6 +172,7 @@ function App() {
   useEffect(() => {
     const allDone = Object.values(state.canPlay).every(value => !value)
     turnOver.current = allDone
+    if (allDone) console.log('ALL DONE')
   }, [state])
 
   return (
