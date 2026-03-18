@@ -60,29 +60,29 @@ export function playerSkill(state, action) {
   const skillKey = action.payload.skill
   const skill = attacker.skills[skillKey]
   const target = state[action.payload.target]
+
   switch (skill.type) {
     case 'DAMAGE': {
       const damage = calculateDamage(skill.damage, target)
       let damageOverTime = skill.damageOverTime || 0
 
-      //Enemy changes
+      // Enemy changes
       const enemyHealth = target.health - (damage + damageOverTime)
       const enemyDamage = target.damage
       let enemyDefense = target.defense
 
-      if (skill.defense) enemyDefense = target.defense + (skill.defense) 
+      if (skill.defense) enemyDefense = target.defense + skill.defense
 
       const enemyChanges = addChanges(enemyHealth, enemyDamage, enemyDefense)
       const enemyState = updateEnemy(state, target, enemyChanges)
-      enemyState
 
-      //Character changes
+      // Character changes
       let characterHealth = attacker.health
-      let characterDamage= attacker.damage
+      let characterDamage = attacker.damage
       let characterDefense = attacker.defense
 
-      if (skill.healthSelf) characterHealth = attacker.health + skill.health
-      if (skill.damageSelf) characterDamage = attacker.damage + skill.damage
+      if (skill.healthSelf) characterHealth = attacker.health + skill.healthSelf     // fix: was skill.health
+      if (skill.damageSelf) characterDamage = attacker.damage + skill.damageSelf     // fix: was skill.damage
       if (skill.defenseSelf) characterDefense = attacker.defense + skill.defenseSelf
 
       const characterChanges = addChanges(characterHealth, characterDamage, characterDefense)
@@ -90,22 +90,31 @@ export function playerSkill(state, action) {
       return characterState
     }
     case 'BUFF': {
-      const newHealth = attacker.health + skill.healthSelf || attacker.health
-      const newDefense = attacker.defense + skill.defenseSelf || attacker.defense
-      const changes = addChanges(newHealth, newDefense)
+      const newHealth = attacker.health + (skill.healthSelf ?? 0)     // fix: was || fallback
+      let newDamage = attacker.damage
+      const newDefense = attacker.defense + (skill.defenseSelf ?? 0)  // fix: was || fallback
+      const changes = addChanges(newHealth, newDamage, newDefense)
       const newState = updateCharacter(state, attackerKey, changes)
       return newState
     }
     case 'DEBUFF': {
-      const enemyHealth = target.health + skill.health || target.health
-      const enemyDamage = target.damage + skill.damage || target.damage
-      const enemyDefense = target.defense + skill.defense || target.defense
+      const enemyHealth = target.health + (skill.health ?? 0)    // fix: was || fallback
+      const enemyDamage = target.damage + (skill.damage ?? 0)    // fix: was || fallback
+      const enemyDefense = target.defense + (skill.defense ?? 0) // fix: was || fallback
       const changes = addChanges(enemyHealth, enemyDamage, enemyDefense)
+      const newState = updateEnemy(state, target, changes)
+      return newState
+    }
+    case 'HEAL': {
+      const characterHealth = attacker.health + skill.heal
+      let characterDamage = attacker.damage
+      const characterDefense = attacker.defense
+      const changes = addChanges(characterHealth, characterDamage, characterDefense)
       const newState = updateCharacter(state, attackerKey, changes)
       return newState
     }
-    case 'HEAL': { //NANTI REVISI SUPAYA TARGET YANG DI HEAL
-      const characterHealth = 
-    }
+    default:                                                          // fix: added default case
+      console.warn(`Unknown skill type: ${skill.type}`)
+      return state
   }
 }
