@@ -82,7 +82,7 @@ function App() {
           },
           swordPhalanx: {
             type: 'DAMAGE',
-            defenseSelf: -30,
+            defenseSelf: 15,
           }
         }
       },
@@ -93,10 +93,9 @@ function App() {
         defense: 22,
         critChance: 0,
         skills: {
-          piercingArrow: {
+          heavyArrow: {
             type: 'DAMAGE',
-            damage: 120,
-            defense: -20,
+            damage: 320,
           },
           heavySlash: {
             type: 'DAMAGE',
@@ -105,7 +104,8 @@ function App() {
           },
           focusAim: {
             type: 'DAMAGE',
-            defense: 30,
+            damage: 300,
+            defense: -10,
           }
         }
       },
@@ -116,19 +116,18 @@ function App() {
         defense: 30,
         critChance: 0,
         skills: {
-          shieldBash: {
-            type: 'DAMAGE',
-            damage: 120,
-            defense: -20,
+          heal: {
+            type: 'HEAL',
+            heal: 100,
           },
-          heavySlash: {
-            type: 'DAMAGE',
-            damage: 225,
-            defense: -15,
-          },
-          fortify: {
+          blessing: {
             type: 'BUFF',
-            defense: 30,
+            defense: 15,
+          },
+          weaken: {
+            type: 'DEBUFF',
+            damage: -50, 
+            defense: -10,
           }
         }
       },

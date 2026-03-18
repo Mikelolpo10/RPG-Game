@@ -6,10 +6,10 @@ main {
   height: 100vh;
   width: 100vw;
   background-color: black;
-  background-image: url('./assets/images/brick.jpg');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  /* background-image: url('./assets/images/brick.jpg'); */
+  /* background-position: center; */
+  /* background-repeat: no-repeat; */
+  /* background-size: cover; */
 }
 
 #player-characters-container {
