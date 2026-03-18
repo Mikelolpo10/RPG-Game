@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useReducer } from 'react'
 import Enemy from './components/Enemy.jsx'
 import PlayerAction from './components/PlayerAction.jsx'
-import { playerAttack, playerBlock, playerSkill } from './logic.js'
+import { playerAttack, playerBlock, playerSkill, enemyTurn } from './logic.js'
 import { closeSkillsModal, openSkillsModal } from './design.js'
 import knight from './assets/images/knight.png'
 import wizard from './assets/images/wizard.png'
@@ -170,7 +170,8 @@ function App() {
   useEffect(() => {
     const allDone = Object.values(state.canPlay).every(value => !value)
     turnOver.current = allDone
-    if (allDone) console.log('ALL DONE')
+    enemyTurn(state)
+    // if (allDone) enemyTurn(state, )
   }, [state])
 
   return (

@@ -118,3 +118,26 @@ export function playerSkill(state, action) {
       return state
   }
 }
+
+export function enemyTurn(state) {
+  const moveOptions = [
+    {action: 'ATTACK', weight: 50},
+    {action: 'BLOCK', weight: 30},
+    {action: 'SKILL', weight: 20},
+  ]
+  
+  function weightedRandom(options) {      
+    const totalWeight = options.reduce((sum, o) => sum + o.weight, 0);
+    let roll = Math.random() * totalWeight;
+    console.log(roll)
+  
+    for (const option of options) {
+      roll -= option.weight;
+      if (roll <= 0) return option.action; 
+    }
+  }
+  
+  weightedRandom(moveOptions)
+}
+
+
