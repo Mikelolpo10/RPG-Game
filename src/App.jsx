@@ -170,8 +170,7 @@ function App() {
   useEffect(() => {
     const allDone = Object.values(state.canPlay).every(value => !value)
     turnOver.current = allDone
-    enemyTurn(state)
-    // if (allDone) enemyTurn(state, )
+    if (allDone) enemyTurn(state)
   }, [state])
 
   return (

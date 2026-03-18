@@ -1,38 +1,4 @@
-function calculateDamage(damage, target) {
-  const totalDamage = Math.round(damage / (1 + (target.defense / 100)))
-  return totalDamage
-}
-
-function updateCharacter(state, charKey, changes) {
-  const newState = {
-    ...state,
-    characters: {
-      ...state.characters,
-      [charKey]: {
-        ...state.characters[charKey], ...changes
-      }
-    }
-  }
-  return newState
-}
-
-function updateEnemy(state, enemy, changes) {
-  const newState = {
-    ...state,
-    enemy: {
-      ...enemy, ...changes
-    }
-  }
-  return newState
-}
-
-function addChanges(health, damage, defense) {
-  return {
-    health: health,
-    damage: damage,
-    defense: defense,
-  }
-}
+import { calculateDamage, updateCharacter, updateEnemy, addChanges } from './utils.js'
 
 export function playerAttack(state, action) {
   const attacker = state.characters[action.payload.attackerKey]
@@ -121,23 +87,27 @@ export function playerSkill(state, action) {
 
 export function enemyTurn(state) {
   const moveOptions = [
-    {action: 'ATTACK', weight: 50},
-    {action: 'BLOCK', weight: 30},
-    {action: 'SKILL', weight: 20},
+    { action: 'ATTACK', weight: 50 },
+    { action: 'BLOCK', weight: 30 },
+    { action: 'SKILL', weight: 20 },
   ]
-  
-  function weightedRandom(options) {      
+
+  function weightedRandom(options) {
     const totalWeight = options.reduce((sum, o) => sum + o.weight, 0);
     let roll = Math.random() * totalWeight;
-    console.log(roll)
-  
+
     for (const option of options) {
       roll -= option.weight;
-      if (roll <= 0) return option.action; 
+      if (roll <= 0) return option.action;
+    }
+  }
+
+  switch (weightedRandom(moveOptions)) {
+    case 'ATTACK': {
+      return
     }
   }
   
-  weightedRandom(moveOptions)
 }
 
 
