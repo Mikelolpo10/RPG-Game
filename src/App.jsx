@@ -148,18 +148,22 @@ function App() {
   }
   const [state, dispatch] = useReducer(reducer, initialState)
   const selectedSkill = useRef('') 
+  const enemyMove = useRef(false)
 
   function reducer(state, action) {
     switch (action.type) {
-      case 'ATTACK':
-        state.canPlay[selectedChar] = false
-        return playerAttack(state, action)
+      case 'ATTACK': {
+        return updateTurn(state, action)
+      }
       case 'BLOCK':
         state.canPlay[selectedChar] = false
         return playerBlock(state, action)
       case 'SKILL':
         state.canPlay[selectedChar] = false
         return playerSkill(state, action)
+      case 'ENEMYTURN': {
+        return enemyTurn(resetTurn(state), action)
+      }
       default:
         console.log(`ACTION NOT VALID`)
         return state
@@ -169,9 +173,39 @@ function App() {
   // Testing
   useEffect(() => {
     const allDone = Object.values(state.canPlay).every(value => !value)
-    turnOver.current = allDone
-    if (allDone) enemyTurn(state)
+  
+    if (allDone && !enemyMove.current) {
+      enemyMove.current = true
+      dispatch({ type: 'ENEMYTURN' })
+    }
+  
+    if (!allDone) {
+      enemyMove.current = false
+    }
   }, [state])
+
+  function updateTurn(state, action) {
+    return playerAttack({
+      ...state,
+      canPlay: {
+        ...state.canPlay,
+        [selectedChar]: false
+      }
+    }, action)
+  }
+
+  function resetTurn(state) {
+    const canPlay = Object.fromEntries(
+      Object.entries(state.canPlay).map(([key, value]) => {
+        return [key, true]
+      })
+    )
+    const newState = {
+      ...state, 
+      canPlay
+    }
+    return newState
+  }
 
   return (
     <>

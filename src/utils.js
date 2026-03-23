@@ -33,3 +33,15 @@ export function addChanges(health, damage, defense) {
     defense: defense,
   }
 }
+
+export function weightedRandom(options) {
+  const totalWeight = options.reduce((sum, o) => sum + o.weight, 0);
+  let roll = Math.random() * totalWeight;
+  
+  for (const option of options) {
+    roll -= option.weight;
+    if (roll <= 0) return option.name;
+  }
+}   
+
+
