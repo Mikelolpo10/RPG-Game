@@ -1,3 +1,4 @@
+import { motion, AnimatePresence, } from 'motion/react'
 import { useState, useEffect, useRef, useReducer } from 'react'
 import Enemy from './components/Enemy.jsx'
 import PlayerAction from './components/PlayerAction.jsx'
@@ -12,33 +13,12 @@ import './App.css'
 
 function App() {
   const [selectedChar, setSelectedChar] = useState('knight')
-  const turnOver = useRef(false)
   const images = {
     knight,
     wizard,
     archer,
     priest,
   }
-  // Knight
-  // Shield Bash(Done) – Menyerang musuh dengan perisai sehingga mengurangi defense.
-  // Heavy Slash(Done) – Serangan pedang kuat dengan damage lebih dari attack biasa dan mengurang defense 1 turn.
-  // Fortify(Done) – Meningkatkan defense knight selama 2 turn.
-  // Shield Wall — Menyerap damage yang diterima ally dengan rumus rd - (def + allyDef)
-  // Wizard
-  // Explosion – Serangan api dengan damage tinggi dan memberikan dot untuk 1 turn tapi mengurangi defense dan membuat wizard tidak bisa menyerang pada next turn.
-  // Lightning Strike – Serangan petir cepat yang memiliki peluang menembus defense?.
-  // Sword Phalanx — Summon 3 pedang yg dimana naikin defense dan serang musuh dengan damage moderate
-  // Archer
-  // Piercing Arrow – Panah yang menembus armor sehingga sebagian defense musuh diabaikan.
-  // Rapid Shot?? – Menembakkan beberapa panah cepat dengan total damage sedang.
-  // Focus Aim – Meningkatkan crit chance archer selama 3 turn.
-  // Priest
-  // Heal – Menyembuhkan HP salah satu anggota tim.
-  // Holy Light – Serangan cahaya suci ke musuh dengan damage sedang.
-  // Blessing – Memberikan buff ke ally yang meningkatkan defense dan attack.
-  // Weaken – Memberikan debuff attack .
-  // NOTE: Nanti tambah sistem skill kyk honkai starrail jadi skill gbs di spam
-  // NOTE: Tipe skill ada attack, buff, debuff
   const initialState = {
     characters: {
       knight: {
@@ -126,7 +106,7 @@ function App() {
           },
           weaken: {
             type: 'DEBUFF',
-            damage: -50, 
+            damage: -50,
             defense: -10,
           }
         }
@@ -147,8 +127,9 @@ function App() {
     }
   }
   const [state, dispatch] = useReducer(reducer, initialState)
-  const selectedSkill = useRef('') 
+  const selectedSkill = useRef('')
   const enemyMove = useRef(false)
+  const [isAttacking, setIsAttacking] = useState(false)
 
   function reducer(state, action) {
     switch (action.type) {
@@ -173,12 +154,12 @@ function App() {
   // Testing
   useEffect(() => {
     const allDone = Object.values(state.canPlay).every(value => !value)
-  
+
     if (allDone && !enemyMove.current) {
       enemyMove.current = true
       dispatch({ type: 'ENEMYTURN' })
     }
-  
+
     if (!allDone) {
       enemyMove.current = false
     }
@@ -201,31 +182,39 @@ function App() {
       })
     )
     const newState = {
-      ...state, 
+      ...state,
       canPlay
     }
     return newState
   }
 
+  // function attackAnimate() {
+
+  // }
+
   return (
-    <>
+    <AnimatePresence mode='wait'>
       <main>
         <Enemy stats={state.enemy} />
 
         <div id="player-characters-container">
           {Object.keys(state.characters).map((name, index) => {
             return (
-              <div
+              <motion.div
                 key={name}
                 className={`character ${name === selectedChar ? 'is-active' : ''}`}
                 onClick={() => setSelectedChar(name)}
+                animate={{
+                  rotateZ: isAttacking && selectedChar === name ? 45 : 0,
+                }}
+                transition={{ duration: 0.2, ease: 'easeOut' }}
               >
                 <img
                   src={images[name]}
                   alt={name}
                   style={index <= 1 ? { transform: 'scaleX(-1)' } : {}}
                 />
-              </div>
+              </motion.div>
             )
           })}
         </div>
@@ -233,12 +222,16 @@ function App() {
         <div id="player-action-container">
           <PlayerAction
             action='Attack'
-            onClick={() => dispatch(
-              {
-                type: 'ATTACK',
-                payload: { attackerKey: selectedChar, target: 'enemy' }
-              }
-            )}
+            onClick={() => {
+              dispatch(
+                {
+                  type: 'ATTACK',
+                  payload: { attackerKey: selectedChar, target: 'enemy' }
+                }
+              )
+              setIsAttacking(true)
+              setTimeout(() => setIsAttacking(false), 400)
+            }}
             disabled={state.canPlay[selectedChar]}
           />
           <PlayerAction
@@ -255,7 +248,7 @@ function App() {
             action='Skill'
             onClick={() => {
               openSkillsModal()
-            }} 
+            }}
             disabled={state.canPlay[selectedChar]}
           />
           <PlayerAction
@@ -306,7 +299,7 @@ function App() {
           </div>
         </div>
       </main>
-    </>
+    </AnimatePresence>
   )
 }
 
