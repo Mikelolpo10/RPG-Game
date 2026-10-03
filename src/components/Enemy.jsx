@@ -1,7 +1,6 @@
 import Typewriter from 'typewriter-effect'
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import enemyImg from '../assets/images/enemy.png'
-import './Enemy.css'
 
 export default function Enemy({ stats }) {
   const enemyLines = {
@@ -57,21 +56,26 @@ export default function Enemy({ stats }) {
   }, [])
 
   return (
-    <div id='enemy-container'>
-      <img id='enemy-img' src={enemyImg} alt='enemy.png' />
-      <div id="dialog-box">
-        <div id="dialog-arrow"></div>
-        <Typewriter options={{
-          strings: [enemyLine],
-          autoStart: true,
-          delay: 100,
-          pauseFor: 7000,
-          loop: false,
-          cursor: '_',
-        }}
+    <div className="mt-14 relative">
+      <div className='w-40'>
+        <img src={enemyImg} alt="enemy.png" />
+      </div>
+
+      <div className="absolute left-40 top-[40%] flex h-20 w-64 rounded-2xl border border-white p-4 text-[1.2rem] [word-spacing:3px]">
+        <div className="absolute left-[-1.3rem] h-0 w-0 border-y-10 border-r-20 border-y-transparent border-r-[rgb(217,217,217)]"></div>
+        <Typewriter
+          options={{
+            strings: [enemyLine],
+            autoStart: true,
+            delay: 100,
+            pauseFor: 7000,
+            loop: false,
+            cursor: '_',
+          }}
         />
       </div>
-      <div id='enemy-debug-stats'>
+
+      <div className="absolute right-0">
         <h5>Stats</h5>
         <p>{stats.health}</p>
         <p>{stats.damage}</p>
